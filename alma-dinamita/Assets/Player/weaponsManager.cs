@@ -17,15 +17,9 @@ public class weaponsManager : MonoBehaviour
     public short actualWeapon = 1;
     public short auxiliar = 1;
 
-    [SerializeField] Text cooldownUI;
-    void UpdateCooldownUI()
-    {
-        cooldownUI.text = (timeLeftUntilGameObjectIsEnabled - Time.deltaTime).ToString();
-    }
     // Update is called once per frame
     void Update()
     {
-        UpdateCooldownUI();
         if (Input.GetKeyDown("1"))
         {
             timeLeftUntilGameObjectIsEnabled = Time.time + primaryCooldown;

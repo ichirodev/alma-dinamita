@@ -57,12 +57,19 @@ public class xTemplate : MonoBehaviour
     {
         weaponIsEnabled = true;
     }
-    void Update()
+    void FixedUpdate()
     {
         timeAtUpdate = Time.time;
         ammo = magAmmo.ToString() + "/" + reserveAmmo.ToString();
         ammoUI.text = ammo;
-        if (!weaponIsEnabled) return;
+        if (!weaponIsEnabled)
+        {
+            if (timeAtUpdate > nextBulletFired)
+            {
+                nextBulletFired = timeAtUpdate;
+            }
+            return;
+        }
 
         if (!isReloading)
         {
@@ -123,4 +130,10 @@ public class xTemplate : MonoBehaviour
     {
         weaponIsEnabled = false;
     }
+
+    void OnApplicationFocus(bool hasFocus)
+    {
+        weaponIsEnabled = hasFocus;
+    }
+
 }
