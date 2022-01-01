@@ -75,6 +75,14 @@ public class weaponsManager : MonoBehaviour
         }
     }
 
+    private void Start()
+    {
+        primaryWeapon.SetActive(true);
+        secondaryWeapon.SetActive(false);
+        special.SetActive(false);
+        actualWeapon = 1;
+    }
+
     private IEnumerator EnableWeapon(short weaponNumber, float cooldown)
     {
         yield return new WaitForSeconds(cooldown);
