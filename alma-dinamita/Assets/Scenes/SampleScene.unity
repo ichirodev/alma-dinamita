@@ -916,7 +916,7 @@ GameObject:
   - component: {fileID: 1410503689}
   - component: {fileID: 1410503688}
   m_Layer: 0
-  m_Name: Audio Source
+  m_Name: ShootingAudioSource
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -932,7 +932,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: fef312b557d6eed46846ff1336a9e16a, type: 3}
+  m_audioClip: {fileID: 0}
   m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1
@@ -1043,6 +1043,7 @@ GameObject:
   - component: {fileID: 1466865787}
   - component: {fileID: 1466865789}
   - component: {fileID: 1466865788}
+  - component: {fileID: 1466865790}
   m_Layer: 0
   m_Name: Camera
   m_TagString: Untagged
@@ -1115,6 +1116,18 @@ Camera:
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
+--- !u!114 &1466865790
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1466865786}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 73347a5e0e3ec1445a184caf4561aaf8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1480993902
 GameObject:
   m_ObjectHideFlags: 0
@@ -1158,24 +1171,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4438fd132589b1741ae3517b501016f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  actualWeaponAudioSource: {fileID: 1410503688}
-  actualWeaponAudioClip: {fileID: 8300000, guid: fef312b557d6eed46846ff1336a9e16a, type: 3}
+  weaponAS: {fileID: 1410503688}
+  weaponAC: {fileID: 8300000, guid: fef312b557d6eed46846ff1336a9e16a, type: 3}
   weaponType: 0
   weaponName: shit_gun
-  magazineAmmo: 4
-  reserveAmmo: 8
-  magazineAux: 0
+  magazineAmmo: 24
+  reserveAmmo: 60
   reserveAux: 0
-  maxMagazineAmmo: 30
-  maxReserveAmmo: 32
   isReloading: 0
   isShooting: 0
   isWeaponEnabled: 0
-  m1: 0
-  nextShootTime: 0.000001
-  nextShootDelay: 0.44
-  finishReloadingTime: 0.0000001
-  reloadDelay: 3
 --- !u!1 &1669863973
 GameObject:
   m_ObjectHideFlags: 0

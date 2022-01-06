@@ -17,6 +17,7 @@ public class weaponsManager : MonoBehaviour
     public short actualWeapon = 1;
     public short auxiliar = 1;
 
+    private bool isReloading = false;
     // Update is called once per frame
     void Update()
     {
@@ -119,4 +120,5 @@ public class weaponsManager : MonoBehaviour
                 }
         }
     }
+
 }

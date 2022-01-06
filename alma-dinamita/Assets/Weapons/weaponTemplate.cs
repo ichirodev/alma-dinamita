@@ -5,27 +5,28 @@ using UnityEngine;
 public class weaponTemplate : MonoBehaviour
 {
     // Audio effect of the shot when fired
-    [SerializeField] AudioSource actualWeaponAudioSource;
-    [SerializeField] AudioClip actualWeaponAudioClip;
+    [SerializeField] AudioSource weaponAS;
+    [SerializeField] AudioClip weaponAC;
     // Weapon details
     public short weaponType = 0; // 0: Primary, 1: Secondary, 2: Special
     public string weaponName = "shit_gun";
     // Weapon technical stats
-    public int magazineAmmo = 30;
-    public int reserveAmmo = 60;
-    public int magazineAux = 0;
+    [SerializeField] int magazineAmmo = 30;
+    [SerializeField] int reserveAmmo = 60;
     public int reserveAux = 0;
-    public int maxMagazineAmmo = 30;
-    public int maxReserveAmmo = 60;
+    private int maxMagazineAmmo = 30;
+    private int maxReserveAmmo = 60;
     // Status booleans
-    public bool isReloading, isShooting, isWeaponEnabled;
-    public bool m1 = false;
+    [SerializeField] bool isReloading;
+    [SerializeField] bool isShooting;
+    [SerializeField] bool isWeaponEnabled;
 
-    public float nextShootTime = 0.00000001f;
-    public float nextShootDelay = 3.0f;
-    public float finishReloadingTime = 0.0000001f;
-    public float reloadDelay = 3.0f;
+    private float nextShootTime = 0.00000001f;
+    private float nextShootDelay = 0.10f;
+    private float finishReloadingTime = 0.0000001f;
+    private float reloadDelay = 2.1f;
 
+    [SerializeField] const float swapCooldown = 0.4f;
     private void Start()
     {
         isWeaponEnabled = true;
@@ -43,7 +44,7 @@ public class weaponTemplate : MonoBehaviour
                     return;
                 }
                 reserveAmmo += magazineAmmo;
-                if (reserveAmmo > maxMagazineAmmo)
+                if (reserveAmmo >= maxMagazineAmmo)
                 {
                     magazineAmmo = maxMagazineAmmo;
                     reserveAux = reserveAmmo - magazineAmmo;
@@ -89,7 +90,6 @@ public class weaponTemplate : MonoBehaviour
     {
         if (Time.time < nextShoot)
         {
-            Debug.Log("can't shoot lmao");
             return true;
         }
         return false;
@@ -97,11 +97,20 @@ public class weaponTemplate : MonoBehaviour
 
     private bool WeaponFire()
     {
-        nextShootTime = Time.time + nextShootDelay;
-        actualWeaponAudioSource.Play();
-        magazineAmmo--;
+        if (magazineAmmo >= 1)
+        {
+            nextShootTime = Time.time + nextShootDelay;
+            weaponAS.Play();
+            magazineAmmo--;
+            return true;
+        }
             
-        return true;
+        return false;
     }
 
+
+    private void OnEnable()
+    {
+        weaponAS.clip = weaponAC;
+    }
 }
