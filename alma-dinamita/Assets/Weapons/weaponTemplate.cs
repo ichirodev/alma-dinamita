@@ -104,7 +104,6 @@ public class weaponTemplate : MonoBehaviour
             magazineAmmo--;
             return true;
         }
-            
         return false;
     }
 

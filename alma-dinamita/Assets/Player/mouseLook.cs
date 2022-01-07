@@ -35,7 +35,7 @@ public class mouseLook : MonoBehaviour
     void Start()
     {
         // Find our head object
-        head = GetComponentInChildren<Camera>().transform;
+        head = GameObject.Find("Camera").GetComponent<Camera>().transform;
         // Cache the orientation of the body and head
         bodyStartOrientation = transform.localRotation;
         headStartOrientation = head.transform.localRotation;

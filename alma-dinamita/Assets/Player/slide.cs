@@ -5,9 +5,13 @@ public class slide : MonoBehaviour
     [SerializeField] CharacterController CharControllerComponent;
     [SerializeField] movement MovComponent;
     public Transform slideToPosition;
+    public Transform slideGroundCheck;
     public Vector3 fixedSlideToPosition;
     public bool isSliding = false;
     float slideSpeed = 7.880f;
+    private float maxHeightWhenSliding = 0.1f;
+    RaycastHit rayHitOnGround;
+    Ray groundCheckRay;
 
     private void Start()
     {
@@ -16,7 +20,7 @@ public class slide : MonoBehaviour
     }
     private void Update()
     {
-        if (fixedSlideToPosition == transform.position)
+        if (fixedSlideToPosition == transform.position || EndSlide())
         {
             isSliding = false;
             CharControllerComponent.enabled = true;
@@ -33,6 +37,21 @@ public class slide : MonoBehaviour
         if (isSliding)
         {
             transform.position = Vector3.Lerp(transform.position, fixedSlideToPosition, slideSpeed * Time.deltaTime);
+            groundCheckRay = new Ray(slideGroundCheck.transform.position, -Vector3.up);
+            if (Physics.Raycast(groundCheckRay, out rayHitOnGround))
+            {
+                if (rayHitOnGround.collider.tag == "World")
+                {
+                    if (rayHitOnGround.distance > maxHeightWhenSliding)
+                    {
+                        isSliding = false;
+                        CharControllerComponent.enabled = true;
+                        MovComponent.enabled = true;
+                        fixedSlideToPosition = new Vector3(0, 0, 0);
+                        Debug.Log(rayHitOnGround.distance);
+                    }
+                }
+            }
         }
     }
 
@@ -42,7 +61,7 @@ public class slide : MonoBehaviour
     // the slide ends
     private bool EndSlide()
     {
-        float canSlideCancel = fixedSlideToPosition.z - 0.4f;
+        float canSlideCancel = fixedSlideToPosition.z - 0.26f;
         // Slide cancel
         if (transform.position.z >= canSlideCancel)
         {
