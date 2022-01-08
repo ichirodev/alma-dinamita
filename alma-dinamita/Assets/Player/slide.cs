@@ -20,6 +20,10 @@ public class slide : MonoBehaviour
     }
     private void Update()
     {
+        if (Input.GetAxis("Vertical") < 0.01)
+        {
+            return;
+        }
         if (fixedSlideToPosition == transform.position || EndSlideByPlayerOrWorld())
         {
             CancelSlide();

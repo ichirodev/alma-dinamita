@@ -143,7 +143,13 @@ public class movement : MonoBehaviour
     {
         if (endsFreezeTimeSprint < Time.time)
         {
-            canSprint = true;
+            if (Input.GetAxis("Vertical") < 0.01f)
+            {
+                canSprint = false;
+            } else
+            {
+                canSprint = true;
+            }
         } else
         {
             canSprint = false;
