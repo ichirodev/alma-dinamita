@@ -49,11 +49,22 @@ public class health : MonoBehaviour
         }
         if (restorePlayerHealth) playerHealth = maxHealth;
     }
-    public void GetDamageOnHealth(float damage)
+    public void SetDamageOnHealth(float damage)
     {
-        playerHealth = playerHealth - damage;
+        var healthAfterDamage = playerHealth - damage;
+        if (healthAfterDamage <= 0)
+        {
+            // die
+            fuckingDie();
+            Debug.Log("xd die");
+            return;
+        }
+        playerHealth = healthAfterDamage;
     }
-
+    public float GetPlayerHealth()
+    {
+        return playerHealth;
+    }
     public void GetHealed()
     {
         if (playerHealth >= maxHealth)
@@ -71,6 +82,11 @@ public class health : MonoBehaviour
 
     }
 
+    private void fuckingDie()
+    {
+        Destroy(gameObject);
+    }
+
     private void Start()
     {
         gamemodeHealthType = 0; // Classic health: 100
@@ -79,6 +95,7 @@ public class health : MonoBehaviour
 
     private void Update()
     {
+        if (healthTextUI == null) return;
         healthTextUI.text = playerHealth.ToString();
     }
 }
