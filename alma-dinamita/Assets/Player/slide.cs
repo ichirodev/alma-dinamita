@@ -20,7 +20,8 @@ public class slide : MonoBehaviour
     }
     private void Update()
     {
-        if (Input.GetAxis("Vertical") < 0.01)
+        // Don't allow to slide if the player is walking backwards
+        if (Input.GetAxis("Vertical") < -0.001000f)
         {
             return;
         }

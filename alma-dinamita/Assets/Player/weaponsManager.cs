@@ -1,7 +1,5 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class weaponsManager : MonoBehaviour
 {
@@ -9,20 +7,37 @@ public class weaponsManager : MonoBehaviour
     [SerializeField] GameObject primaryWeapon;
     [SerializeField] GameObject secondaryWeapon;
     [SerializeField] GameObject special;
-    [SerializeField] float primaryCooldown = 0.4f;
-    [SerializeField] float secondaryCooldown = 9f;
-    [SerializeField] float specialCooldown = 0.3f;
-
+    float primaryCooldown = 1.4f;
+    float secondaryCooldown = 0.7f;
+    float specialCooldown = 0.3f;
+    public bool changingToPrimary;
+    public bool changingToSecondary;
+    public bool changingToSpecial;
     public short lastWeapon = 1;
     public short actualWeapon = 1;
     public short auxiliar = 1;
 
-    private bool isReloading = false;
     // Update is called once per frame
     void Update()
     {
+        // Changing to a weapon will lock the state to not swap any other weapon
+        // until the weapon has been changed
+        if (changingToPrimary || changingToSecondary || changingToSpecial)
+        {
+            // In case the time to enable the gameobject has passed and it has not been enabled
+            // enable it manually
+            if (timeLeftUntilGameObjectIsEnabled < Time.time - 0.1f)
+            {
+                Debug.LogError("Gotta fix this dawg");
+            }
+            return;
+        }
         if (Input.GetKeyDown("1"))
         {
+            if (actualWeapon == 1)
+            {
+                return;
+            }
             timeLeftUntilGameObjectIsEnabled = Time.time + primaryCooldown;
             lastWeapon = actualWeapon;
             StartCoroutine(EnableWeapon(1, primaryCooldown));
@@ -30,6 +45,10 @@ public class weaponsManager : MonoBehaviour
         }
         if (Input.GetKeyDown("2"))
         {
+            if (actualWeapon == 2)
+            {
+                return;
+            }
             timeLeftUntilGameObjectIsEnabled = Time.time + secondaryCooldown;
             lastWeapon = actualWeapon;
             StartCoroutine(EnableWeapon(2, secondaryCooldown));
@@ -37,6 +56,10 @@ public class weaponsManager : MonoBehaviour
         }
         if (Input.GetKeyDown("3"))
         {
+            if (actualWeapon == 3)
+            {
+                return;
+            }
             timeLeftUntilGameObjectIsEnabled = Time.time + specialCooldown;
             lastWeapon = actualWeapon;
             StartCoroutine(EnableWeapon(3, specialCooldown));
@@ -82,31 +105,46 @@ public class weaponsManager : MonoBehaviour
         secondaryWeapon.SetActive(false);
         special.SetActive(false);
         actualWeapon = 1;
+        lastWeapon = 1;
+        timeLeftUntilGameObjectIsEnabled = Time.time + primaryCooldown;
+        StartCoroutine(EnableWeapon(1, primaryCooldown));
+
     }
 
     private IEnumerator EnableWeapon(short weaponNumber, float cooldown)
     {
-        yield return new WaitForSeconds(cooldown);
         switch(weaponNumber)
         {
             case 1:
                 {
-                    primaryWeapon.SetActive(true);
+                    primaryWeapon.SetActive(false);
                     secondaryWeapon.SetActive(false);
                     special.SetActive(false);
+                    changingToPrimary = true;
+                    yield return new WaitForSeconds(cooldown);
+                    changingToPrimary = false;
+                    primaryWeapon.SetActive(true);
                     break;
                 }
             case 2:
                 {
                     primaryWeapon.SetActive(false);
-                    secondaryWeapon.SetActive(true);
+                    secondaryWeapon.SetActive(false);
                     special.SetActive(false);
+                    changingToSecondary = true;
+                    yield return new WaitForSeconds(cooldown);
+                    changingToSecondary = false;
+                    secondaryWeapon.SetActive(true);
                     break;
                 }
             case 3:
                 {
                     primaryWeapon.SetActive(false);
                     secondaryWeapon.SetActive(false);
+                    special.SetActive(false);
+                    changingToSpecial = true;
+                    yield return new WaitForSeconds(cooldown);
+                    changingToSpecial = false;
                     special.SetActive(true);
                     break;
                 }
@@ -120,5 +158,4 @@ public class weaponsManager : MonoBehaviour
                 }
         }
     }
-
 }

@@ -1,5 +1,5 @@
 using UnityEngine;
-
+using UnityEngine.UI;
 public class semiWeaponTemplate : MonoBehaviour
 {
     // Audio effect of the shot when fired
@@ -7,34 +7,34 @@ public class semiWeaponTemplate : MonoBehaviour
     [SerializeField] AudioClip weaponAC;
     // Weapon details
     public short weaponType = 1; // 0: Primary, 1: Secondary, 2: Special
-    public string weaponName = "shit_gun";
+    public string weaponName = "Nerf Pistol";
     // Weapon technical stats
-    [SerializeField] int magazineAmmo = 30;
-    [SerializeField] int reserveAmmo = 60;
+    [SerializeField] int magazineAmmo = 12;
+    [SerializeField] int reserveAmmo = 48;
     public int reserveAux = 0;
-    private int maxMagazineAmmo = 30;
+    private int maxMagazineAmmo = 12;
     private int maxReserveAmmo = 60;
+    public float damage = 18f;
+    public float range = 100.03f;
     // Status booleans
     [SerializeField] bool isReloading;
     [SerializeField] bool isShooting;
     [SerializeField] bool isWeaponEnabled;
-
+    // Timings
     private float nextShootTime = 0.00000001f;
-    private float nextShootDelay = 0.10f;
+    private float nextShootDelay = 0.2440f;
     private float finishReloadingTime = 0.0000001f;
-    private float reloadDelay = 2.1f;
-
-    public float damage = 20f;
-    public float range = 100.03f;
-
+    private float reloadDelay = 0.7f;
+    // Shooting targets
     public Camera firstPersonCamera;
     public bool debugHit = true;
     [SerializeField] GameObject debugHitGameObject;
-
-    [SerializeField] const float swapCooldown = 0.4f;
+    // GUI
+    private Text textAmmo;
 
     private void Start()
     {
+        textAmmo = GameObject.Find("Ammo").GetComponent<Text>();
         isWeaponEnabled = true;
         isShooting = false;
         isReloading = false;
@@ -71,6 +71,7 @@ public class semiWeaponTemplate : MonoBehaviour
         {
             if (finishReloadingTime > Time.time)
             {
+                textAmmo.text = "Reloading";
                 return;
             }
             isReloading = false;
@@ -91,6 +92,8 @@ public class semiWeaponTemplate : MonoBehaviour
         {
             isShooting = false;
         }
+
+        textAmmo.text = magazineAmmo.ToString() + "/" + reserveAmmo.ToString();
     }
 
     private bool WeaponShootIsOnCooldown(float nextShoot)
@@ -106,10 +109,10 @@ public class semiWeaponTemplate : MonoBehaviour
     {
         if (magazineAmmo >= 1)
         {
-            nextShootTime = Time.time + nextShootDelay;
-            weaponAS.Play();
             Shoot();
+            weaponAS.Play();
             magazineAmmo--;
+            nextShootTime = Time.time + nextShootDelay;
             return true;
         }
         return false;
@@ -134,6 +137,7 @@ public class semiWeaponTemplate : MonoBehaviour
 
     private void OnEnable()
     {
+        textAmmo = GameObject.Find("Ammo").GetComponent<Text>();
         isWeaponEnabled = true;
         weaponAS.clip = weaponAC;
     }
