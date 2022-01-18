@@ -16,7 +16,10 @@ public class weaponsManager : MonoBehaviour
     public short lastWeapon = 1;
     public short actualWeapon = 1;
     public short auxiliar = 1;
-
+    // Change to: Weapon Object
+    private Object changeToThis;
+    public Camera changeToCamera;
+    public bool debugHit = true;
     // Update is called once per frame
     void Update()
     {
@@ -97,6 +100,11 @@ public class weaponsManager : MonoBehaviour
                     }
             }
         }
+
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            ChangeToNewWeaponScript();
+        }
     }
 
     private void Start()
@@ -156,6 +164,16 @@ public class weaponsManager : MonoBehaviour
                     special.SetActive(false);
                     break;
                 }
+        }
+    }
+
+    private void ChangeToNewWeaponScript()
+    {
+        Vector3 rayHitPosition = changeToCamera.transform.forward;
+        RaycastHit hit;
+        if (Physics.Raycast(changeToCamera.transform.position, rayHitPosition, out hit, 25))
+        {
+            Debug.Log("Change to " + hit.transform.name);
         }
     }
 }

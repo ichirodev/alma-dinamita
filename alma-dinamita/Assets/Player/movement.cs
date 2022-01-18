@@ -4,18 +4,14 @@ using UnityEngine.UI;
 
 public class movement : MonoBehaviour
 {
-    // UI Metrics
-    public Text movementSpeedMultiplierUIText;
-    public Text movementSpeedUnitsUIText;
-    public Text inHandWeaponWeightUIText;
     // The speed at which we can move, in units per second.
-    [SerializeField] float moveSpeed = 5;
+    private float moveSpeed = 5.5f;
     [Range(-2, 0), SerializeField] float inHandWeaponWeight = 0;
     // The height of a jump, in units.
-    [SerializeField] float jumpHeight = 2;
+    private float jumpHeight = 2;
     // The rate at which our vertical speed will be reduced, in units
     // per second.
-    [SerializeField] float gravity = 20;
+    private float gravity = 20;
     // The degree to which we can control our movement while in midair.
     [Range(0, 10), SerializeField] float airControl = 5;
     // Our current movement direction. If we're on the ground, we have
@@ -34,31 +30,14 @@ public class movement : MonoBehaviour
         public const float slide = 1.3f;
     }
 
-    [SerializeField] float moveSpeedMultiplier = movementMultiplier.walk;
-    public float sprintStartTime = 0.0f;
-    public float sprintEndTime = 0.0f;
-    public float sprintTimeLimit = 6f;
+    private float moveSpeedMultiplier = movementMultiplier.walk;
+    private float sprintStartTime = 0.0f;
+    private float sprintEndTime = 0.0f;
+    private float sprintTimeLimit = 7.22f;
     public bool sprinting;
     public bool sprintFirstFrame;
     public bool canSprint;
     public float endsFreezeTimeSprint;
-    void UpdateMovementSpeedUnitsText()
-    {
-        String s = "MSU: " + (moveSpeed * moveSpeedMultiplier + inHandWeaponWeight).ToString();
-        movementSpeedUnitsUIText.text = s;
-    }
-    void UpdateMovementSpeedMultiplierText()
-    {
-        String s = "MSM: " + moveSpeedMultiplier.ToString();
-        movementSpeedMultiplierUIText.text = s;
-    }
-
-    void UpdateInHandWeaponWeightText()
-    {
-        String s = "IHWW: " + inHandWeaponWeight.ToString() + " units";
-        inHandWeaponWeightUIText.text = s;
-    }
-
     CharacterController controller;
 
     void Start()
@@ -68,9 +47,6 @@ public class movement : MonoBehaviour
         canSprint = true;
         endsFreezeTimeSprint = 0.00000000001f;
         controller = GetComponent<CharacterController>();
-        movementSpeedMultiplierUIText.text = "MSM: 0.0 Started but not updated";
-        movementSpeedUnitsUIText.text = "MSU: 0.0 Started but not updated";
-        inHandWeaponWeightUIText.text = "IHWW: Hope is not an anvil...";
     }
 
     // We do our movement logic in FixedUpdate so that our movement
@@ -202,8 +178,10 @@ public class movement : MonoBehaviour
         {
             moveSpeedMultiplier = movementMultiplier.walk;
         }
-        UpdateMovementSpeedMultiplierText();
-        UpdateMovementSpeedUnitsText();
-        UpdateInHandWeaponWeightText();
+    }
+
+    public float GetMovementSpeedAsUnits()
+    {
+        return moveSpeed * moveSpeedMultiplier + inHandWeaponWeight;
     }
 }

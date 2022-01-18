@@ -136,8 +136,14 @@ public class weaponTemplate : MonoBehaviour
         }
     }
 
+    private void RefillAmmo()
+    {
+        reserveAmmo = maxReserveAmmo;
+    }
+
     private void OnEnable()
     {
+        if (magazineAmmo > maxMagazineAmmo) magazineAmmo = maxMagazineAmmo;
         textAmmo = GameObject.Find("Ammo").GetComponent<Text>();
         isWeaponEnabled = true;
         weaponAS.clip = weaponAC;

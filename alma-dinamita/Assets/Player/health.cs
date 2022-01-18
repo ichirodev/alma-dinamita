@@ -8,7 +8,6 @@ public class health : MonoBehaviour
     private float customMaxHealth;
     private float playerHealth;
     private short gamemodeHealthType;
-    [SerializeField] Text healthTextUI;
 
     public void UpdateGamemodeHealthType(bool restorePlayerHealth)
     {
@@ -65,7 +64,7 @@ public class health : MonoBehaviour
     {
         return playerHealth;
     }
-    public void GetHealed()
+    public void GetHealed(float healingPoints)
     {
         if (playerHealth >= maxHealth)
         {
@@ -73,13 +72,8 @@ public class health : MonoBehaviour
             Debug.Log("Health is at it's max!");
         } else
         {
-            playerHealth = playerHealth + 5.0f;
+            playerHealth = playerHealth + healingPoints;
         }
-    }
-
-    private void GetDamageByFall()
-    {
-
     }
 
     private void fuckingDie()
@@ -91,11 +85,5 @@ public class health : MonoBehaviour
     {
         gamemodeHealthType = 0; // Classic health: 100
         UpdateGamemodeHealthType(true);
-    }
-
-    private void Update()
-    {
-        if (healthTextUI == null) return;
-        healthTextUI.text = playerHealth.ToString();
     }
 }
