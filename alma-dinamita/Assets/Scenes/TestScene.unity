@@ -3758,9 +3758,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   menuGO: {fileID: 1136061080}
   graphGO: {fileID: 326691963}
-  primaryWeaponGO: {fileID: 0}
-  secondaryWeaponGO: {fileID: 0}
-  specialWeaponGO: {fileID: 0}
+  primaryWeaponGO: {fileID: 1480993902}
+  secondaryWeaponGO: {fileID: 122830990}
+  specialWeaponGO: {fileID: 1007835846}
 --- !u!1 &1695481968
 GameObject:
   m_ObjectHideFlags: 0
@@ -3868,7 +3868,7 @@ GameObject:
   - component: {fileID: 1741676658}
   - component: {fileID: 1741676657}
   m_Layer: 5
-  m_Name: MSU
+  m_Name: MovementSpeedUnits
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3901,13 +3901,13 @@ MonoBehaviour:
     m_BestFit: 0
     m_MinSize: 1
     m_MaxSize: 40
-    m_Alignment: 4
+    m_Alignment: 3
     m_AlignByGeometry: 0
     m_RichText: 1
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: MS Units
+  m_Text: mspeedu
 --- !u!222 &1741676658
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -3933,7 +3933,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: -330.6, y: 208}
-  m_SizeDelta: {x: 79.5, y: 20}
+  m_SizeDelta: {x: 120, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1764558238
 GameObject:

@@ -19,8 +19,9 @@ public class misc : MonoBehaviour
     public bool showMovementDetails = true;
     // Graphical user interface texts
     [FormerlySerializedAs("framesPerSecondUI")] [SerializeField] Text framesPerSecondText;
-    [SerializeField] private Text healthPointsText;
-    [SerializeField] private Text movementDetailsText;
+    [SerializeField] Text healthPointsText;
+    [SerializeField] Text movementDetailsText;
+    
     private void Start()
     {
         mFpsNextPeriod = Time.realtimeSinceStartup + FPSMeasurePeriod;
@@ -54,7 +55,7 @@ public class misc : MonoBehaviour
         if (showMovementDetails)
         {
             // show movement speed
-            movementDetailsText.text = "Movement speed: " + playerMovement.GetMovementSpeedAsUnits().ToString() + "]";
+            movementDetailsText.text = "Movement speed: " + playerMovement.GetMovementSpeedAsUnits().ToString();
         }
     }
 }

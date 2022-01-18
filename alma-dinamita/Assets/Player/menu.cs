@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.UI;
 
 public class menu : MonoBehaviour
 {
@@ -13,15 +12,12 @@ public class menu : MonoBehaviour
     [SerializeField] GameObject primaryWeaponGO;
     [SerializeField] GameObject secondaryWeaponGO;
     [SerializeField] GameObject specialWeaponGO;
-
+    private int activeWeapon = 0;
     void Start()
     {
         menuGO.SetActive(false);
         m = GetComponent<movement>();
         ml = GetComponent<mouseLook>();
-        primaryWeaponGO = GameObject.Find("primaryWeapon");
-        secondaryWeaponGO = GameObject.Find("secondaryWeapon");
-        specialWeaponGO = GameObject.Find("specialWeapon");
     }
 
     void Update()
@@ -33,15 +29,15 @@ public class menu : MonoBehaviour
             {
                 isOpen = true;
                 OpenMenu();
+                SetWeaponActive(false);
             }
             else if (!isActive && isOpen)
             {
                 CloseMenu();
                 isOpen = false;
+                SetWeaponActive(true);
             }
         }
-
-        
     }
     void CloseMenu()
     {
@@ -57,5 +53,54 @@ public class menu : MonoBehaviour
         graphGO.SetActive(false);
         m.enabled = false;
         ml.enabled = false;
+    }
+
+    void SetWeaponActive(bool changeActiveTo)
+    {
+        if (changeActiveTo)
+        {
+            switch (activeWeapon)
+            {
+                case 1:
+                {
+                    primaryWeaponGO.SetActive(true);
+                    break;
+                }
+                case 2:
+                {
+                    secondaryWeaponGO.SetActive(true);
+                    break;
+                }
+                case 3:
+                {
+                    specialWeaponGO.SetActive(true);
+                    break;
+                }
+                default:
+                {
+                    break;
+                }
+            }
+        }
+        else
+        {
+            if (primaryWeaponGO.activeSelf)
+            {
+                activeWeapon = 1;
+                primaryWeaponGO.SetActive(false);
+            }
+
+            if (secondaryWeaponGO.activeSelf)
+            {
+                activeWeapon = 2;
+                secondaryWeaponGO.SetActive(false);
+            }
+
+            if (specialWeaponGO.activeSelf)
+            {
+                activeWeapon = 3;
+                specialWeaponGO.SetActive(false);
+            }
+        }
     }
 }
