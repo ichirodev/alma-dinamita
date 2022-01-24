@@ -173,7 +173,111 @@ public class weaponsManager : MonoBehaviour
         RaycastHit hit;
         if (Physics.Raycast(changeToCamera.transform.position, rayHitPosition, out hit, 25))
         {
-            Debug.Log("Change to " + hit.transform.name);
+            if (hit.transform.CompareTag("CanBePicked"))
+            {
+                
+                pickWeapon tempPickWeapon = hit.transform.GetComponent<pickWeapon>();
+                int pickedWeaponType = tempPickWeapon.weaponType;
+                switch (pickedWeaponType)
+                {
+                    case 1:
+                    {
+                        Debug.Log("Change primary to" + hit.transform.name);
+                        if (hit.transform.GetComponent<pickWeapon>().isAutomatic())
+                        {
+                            primaryWeapon.AddComponent<weaponA>();
+                            primaryWeapon.GetComponent<weaponA>().enabled = false;
+                        }
+                        else
+                        {
+                            // Add the required component to the GameObject
+                            primaryWeapon.AddComponent<weaponSA>();
+                            // Pass the picked weapon stats to the in-hand weapon
+                            var tempWSA = primaryWeapon.GetComponent<weaponSA>();
+                            tempWSA.weaponAC = tempPickWeapon.clip;
+                            tempWSA.weaponAS =
+                                GameObject.Find("ShootingAudioSource").GetComponent<AudioSource>();
+                            tempWSA.enabled = false;
+                            tempWSA.firstPersonCamera =
+                                GameObject.Find("WeaponCamera").GetComponent<Camera>();
+                            tempWSA.SetDamage(tempPickWeapon.damage);
+                            tempWSA.SetRange(tempPickWeapon.range);
+                            tempWSA.SetReloadDelay(tempPickWeapon.reloadTime);
+                            tempWSA.SetWeaponAmmo(tempPickWeapon.currentMagAmmo,
+                                tempPickWeapon.currentReserveAmmo,
+                                tempPickWeapon.maxMagAmmo,
+                                tempPickWeapon.maxReserveAmmo);
+                            tempWSA.SetNextShootDelay(tempPickWeapon.betweenShotsTime);
+                            tempWSA.weaponName = tempPickWeapon.weaponName;
+                            tempWSA.weaponType = tempPickWeapon.weaponType;
+                            tempWSA.debugHit = false;
+                            
+                            // Change to primary weapon and activate its script
+                            timeLeftUntilGameObjectIsEnabled = Time.time + primaryCooldown;
+                            lastWeapon = actualWeapon;
+                            StartCoroutine(EnableWeapon(1, primaryCooldown));
+                            actualWeapon = 1;
+                            tempWSA.enabled = true;
+                            
+                        }
+                        Destroy(hit.transform.gameObject);
+                        break;
+                    }
+                    case 2:
+                    {
+                        Debug.Log("Change secondary to " + hit.transform.name);
+                        if (hit.transform.GetComponent<pickWeapon>().isAutomatic())
+                        {
+                            secondaryWeapon.AddComponent<weaponA>();
+                            secondaryWeapon.GetComponent<weaponA>().enabled = false;
+                        }
+                        else
+                        {
+                            // Add the required component to the GameObject
+                            secondaryWeapon.AddComponent<weaponSA>();
+                            // Pass the picked weapon stats to the in-hand weapon
+                            var tempWSA = secondaryWeapon.GetComponent<weaponSA>();
+                            tempWSA.weaponAC = tempPickWeapon.clip;
+                            tempWSA.weaponAS =
+                                GameObject.Find("ShootingAudioSource").GetComponent<AudioSource>();
+                            tempWSA.enabled = false;
+                            tempWSA.firstPersonCamera =
+                                GameObject.Find("WeaponCamera").GetComponent<Camera>();
+                            tempWSA.SetDamage(tempPickWeapon.damage);
+                            tempWSA.SetRange(tempPickWeapon.range);
+                            tempWSA.SetReloadDelay(tempPickWeapon.reloadTime);
+                            tempWSA.SetWeaponAmmo(tempPickWeapon.currentMagAmmo,
+                                tempPickWeapon.currentReserveAmmo,
+                                tempPickWeapon.maxMagAmmo,
+                                tempPickWeapon.maxReserveAmmo);
+                            tempWSA.SetNextShootDelay(tempPickWeapon.betweenShotsTime);
+                            tempWSA.weaponName = tempPickWeapon.weaponName;
+                            tempWSA.weaponType = tempPickWeapon.weaponType;
+                            tempWSA.debugHit = false;
+                            
+                            // Change to primary weapon and activate its script
+                            timeLeftUntilGameObjectIsEnabled = Time.time + secondaryCooldown;
+                            lastWeapon = actualWeapon;
+                            StartCoroutine(EnableWeapon(2, secondaryCooldown));
+                            actualWeapon = 2;
+                            tempWSA.enabled = true;
+                        }
+                        Destroy(hit.transform.gameObject);
+                        break;
+                    }
+                    case 3:
+                    {
+                        Debug.Log("Change special to " + hit.transform.name);
+                        Destroy(hit.transform.gameObject);
+                        break;
+                    }
+                    default:
+                    {
+                        break;
+                    }
+                }
+                //hit.transform.GetComponent<pickWeapon>().GetWeaponComponent();
+            }
         }
     }
 }

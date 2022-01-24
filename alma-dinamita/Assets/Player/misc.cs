@@ -21,7 +21,6 @@ public class misc : MonoBehaviour
     [FormerlySerializedAs("framesPerSecondUI")] [SerializeField] Text framesPerSecondText;
     [SerializeField] Text healthPointsText;
     [SerializeField] Text movementDetailsText;
-    
     private void Start()
     {
         mFpsNextPeriod = Time.realtimeSinceStartup + FPSMeasurePeriod;

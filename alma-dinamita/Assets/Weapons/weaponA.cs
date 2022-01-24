@@ -1,20 +1,21 @@
-using UnityEngine;
 using UnityEngine.UI;
-public class semiWeaponTemplate : MonoBehaviour
+using UnityEngine;
+
+public class weaponA : MonoBehaviour
 {
     // Audio effect of the shot when fired
     [SerializeField] AudioSource weaponAS;
     [SerializeField] AudioClip weaponAC;
     // Weapon details
-    public short weaponType = 1; // 0: Primary, 1: Secondary, 2: Special
-    public string weaponName = "Nerf Pistol";
+    public short weaponType = 0; // 0: Primary, 1: Secondary, 2: Special
+    public string weaponName = "Rifle";
     // Weapon technical stats
-    [SerializeField] int magazineAmmo = 12;
-    [SerializeField] int reserveAmmo = 48;
+    [SerializeField] int magazineAmmo = 45;
+    [SerializeField] int reserveAmmo = 135;
     public int reserveAux = 0;
-    private int maxMagazineAmmo = 12;
-    private int maxReserveAmmo = 60;
-    public float damage = 18f;
+    private int maxMagazineAmmo = 45;
+    private int maxReserveAmmo = 135;
+    public float damage = 24.3f;
     public float range = 100.03f;
     // Status booleans
     [SerializeField] bool isReloading;
@@ -22,9 +23,9 @@ public class semiWeaponTemplate : MonoBehaviour
     [SerializeField] bool isWeaponEnabled;
     // Timings
     private float nextShootTime = 0.00000001f;
-    private float nextShootDelay = 0.2440f;
+    private float nextShootDelay = 0.14f;
     private float finishReloadingTime = 0.0000001f;
-    private float reloadDelay = 0.7f;
+    private float reloadDelay = 1.28f;
     // Shooting targets
     public Camera firstPersonCamera;
     public bool debugHit = true;
@@ -34,7 +35,6 @@ public class semiWeaponTemplate : MonoBehaviour
 
     private void Start()
     {
-        textAmmo = GameObject.Find("Ammo").GetComponent<Text>();
         isWeaponEnabled = true;
         isShooting = false;
         isReloading = false;
@@ -79,7 +79,7 @@ public class semiWeaponTemplate : MonoBehaviour
 
         if (!WeaponShootIsOnCooldown(nextShootTime))
         {
-            if (Input.GetMouseButtonDown(0))
+            if (Input.GetMouseButton(0))
             {
                 if (isWeaponEnabled && !isReloading)
                 {
@@ -94,6 +94,7 @@ public class semiWeaponTemplate : MonoBehaviour
         }
 
         textAmmo.text = magazineAmmo.ToString() + "/" + reserveAmmo.ToString();
+
     }
 
     private bool WeaponShootIsOnCooldown(float nextShoot)

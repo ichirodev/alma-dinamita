@@ -33,6 +33,14 @@
     <property name="vue.rearranger.settings.migration" value="true" />
   </component>
   <component name="RunManager" selected="Attach to Unity Editor.Attach to Unity Editor">
+    <configuration name="Standalone Player" type="RunUnityExe" factoryName="Unity Executable">
+      <option name="EXE_PATH" value="$USER_HOME$/Desktop/alma-dinamita-builds/alma-dinamita.exe" />
+      <option name="PROGRAM_PARAMETERS" value="" />
+      <option name="WORKING_DIRECTORY" value="C:\Users\Ichi\Desktop\alma-dinamita-builds" />
+      <option name="PASS_PARENT_ENVS" value="1" />
+      <option name="USE_EXTERNAL_CONSOLE" value="0" />
+      <method v="2" />
+    </configuration>
     <configuration name="Attach to Unity Editor &amp; Play" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="UNITY_ATTACH_AND_PLAY" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost">
       <option name="allowRunningInParallel" value="false" />
       <option name="listenPortForConnections" value="false" />
@@ -66,6 +74,10 @@
       <workItem from="1642534000907" duration="4808000" />
       <workItem from="1642539324964" duration="1688000" />
       <workItem from="1642541827309" duration="1703000" />
+      <workItem from="1642547128429" duration="6109000" />
+      <workItem from="1642706945789" duration="3778000" />
+      <workItem from="1642710883164" duration="3188000" />
+      <workItem from="1642990605786" duration="5314000" />
     </task>
     <servers />
   </component>
