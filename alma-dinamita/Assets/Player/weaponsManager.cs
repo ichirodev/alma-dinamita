@@ -185,8 +185,34 @@ public class weaponsManager : MonoBehaviour
                         Debug.Log("Change primary to" + hit.transform.name);
                         if (hit.transform.GetComponent<pickWeapon>().isAutomatic())
                         {
+                            // Add the required component to the GameObject
                             primaryWeapon.AddComponent<weaponA>();
-                            primaryWeapon.GetComponent<weaponA>().enabled = false;
+                            // Pass the picked weapon stats to the in-hand weapon
+                            var tempWA = primaryWeapon.GetComponent<weaponA>();
+                            tempWA.weaponAC = tempPickWeapon.clip;
+                            tempWA.weaponAS =
+                                GameObject.Find("ShootingAudioSource").GetComponent<AudioSource>();
+                            tempWA.enabled = false;
+                            tempWA.firstPersonCamera =
+                                GameObject.Find("WeaponCamera").GetComponent<Camera>();
+                            tempWA.SetDamage(tempPickWeapon.damage);
+                            tempWA.SetRange(tempPickWeapon.range);
+                            tempWA.SetReloadDelay(tempPickWeapon.reloadTime);
+                            tempWA.SetWeaponAmmo(tempPickWeapon.currentMagAmmo,
+                                tempPickWeapon.currentReserveAmmo,
+                                tempPickWeapon.maxMagAmmo,
+                                tempPickWeapon.maxReserveAmmo);
+                            tempWA.SetNextShootDelay(tempPickWeapon.betweenShotsTime);
+                            tempWA.weaponName = tempPickWeapon.weaponName;
+                            tempWA.weaponType = tempPickWeapon.weaponType;
+                            tempWA.debugHit = false;
+                            
+                            // Change to primary weapon and activate its script
+                            timeLeftUntilGameObjectIsEnabled = Time.time + primaryCooldown;
+                            lastWeapon = actualWeapon;
+                            StartCoroutine(EnableWeapon(1, primaryCooldown));
+                            actualWeapon = 1;
+                            tempWA.enabled = true;
                         }
                         else
                         {
@@ -228,8 +254,34 @@ public class weaponsManager : MonoBehaviour
                         Debug.Log("Change secondary to " + hit.transform.name);
                         if (hit.transform.GetComponent<pickWeapon>().isAutomatic())
                         {
+                            // Add the required component to the GameObject
                             secondaryWeapon.AddComponent<weaponA>();
-                            secondaryWeapon.GetComponent<weaponA>().enabled = false;
+                            // Pass the picked weapon stats to the in-hand weapon
+                            var tempWA = secondaryWeapon.GetComponent<weaponA>();
+                            tempWA.weaponAC = tempPickWeapon.clip;
+                            tempWA.weaponAS =
+                                GameObject.Find("ShootingAudioSource").GetComponent<AudioSource>();
+                            tempWA.enabled = false;
+                            tempWA.firstPersonCamera =
+                                GameObject.Find("WeaponCamera").GetComponent<Camera>();
+                            tempWA.SetDamage(tempPickWeapon.damage);
+                            tempWA.SetRange(tempPickWeapon.range);
+                            tempWA.SetReloadDelay(tempPickWeapon.reloadTime);
+                            tempWA.SetWeaponAmmo(tempPickWeapon.currentMagAmmo,
+                                tempPickWeapon.currentReserveAmmo,
+                                tempPickWeapon.maxMagAmmo,
+                                tempPickWeapon.maxReserveAmmo);
+                            tempWA.SetNextShootDelay(tempPickWeapon.betweenShotsTime);
+                            tempWA.weaponName = tempPickWeapon.weaponName;
+                            tempWA.weaponType = tempPickWeapon.weaponType;
+                            tempWA.debugHit = false;
+                            
+                            // Change to primary weapon and activate its script
+                            timeLeftUntilGameObjectIsEnabled = Time.time + secondaryCooldown;
+                            lastWeapon = actualWeapon;
+                            StartCoroutine(EnableWeapon(2, secondaryCooldown));
+                            actualWeapon = 2;
+                            tempWA.enabled = true;
                         }
                         else
                         {

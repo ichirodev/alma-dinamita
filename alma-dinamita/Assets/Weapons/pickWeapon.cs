@@ -1,9 +1,4 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.PlayerLoop;
-using Object = UnityEngine.Object;
 
 public class pickWeapon : MonoBehaviour
 {

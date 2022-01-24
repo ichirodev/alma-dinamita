@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.UI;
 public class weaponSA : MonoBehaviour
 {
     // Audio effect of the shot when fired

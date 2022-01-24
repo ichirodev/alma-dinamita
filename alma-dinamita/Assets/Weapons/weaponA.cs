@@ -1,38 +1,35 @@
-using UnityEngine.UI;
 using UnityEngine;
-
 public class weaponA : MonoBehaviour
 {
     // Audio effect of the shot when fired
-    [SerializeField] AudioSource weaponAS;
-    [SerializeField] AudioClip weaponAC;
+    [SerializeField] public AudioSource weaponAS;
+    [SerializeField] public AudioClip weaponAC;
     // Weapon details
     public short weaponType = 0; // 0: Primary, 1: Secondary, 2: Special
-    public string weaponName = "Rifle";
+    public string weaponName = "Nerf Pistol";
     // Weapon technical stats
-    [SerializeField] int magazineAmmo = 45;
-    [SerializeField] int reserveAmmo = 135;
+    [SerializeField] int magazineAmmo = 12;
+    [SerializeField] int reserveAmmo = 48;
     public int reserveAux = 0;
-    private int maxMagazineAmmo = 45;
-    private int maxReserveAmmo = 135;
-    public float damage = 24.3f;
-    public float range = 100.03f;
+    private int maxMagazineAmmo = 12;
+    private int maxReserveAmmo = 60;
+    private float damage = 18f;
+    private float range = 100.03f;
     // Status booleans
     [SerializeField] bool isReloading;
     [SerializeField] bool isShooting;
     [SerializeField] bool isWeaponEnabled;
     // Timings
     private float nextShootTime = 0.00000001f;
-    private float nextShootDelay = 0.14f;
+    private float nextShootDelay = 0.2440f;
     private float finishReloadingTime = 0.0000001f;
-    private float reloadDelay = 1.28f;
+    private float reloadDelay = 0.7f;
     // Shooting targets
     public Camera firstPersonCamera;
     public bool debugHit = true;
     [SerializeField] GameObject debugHitGameObject;
     // GUI
-    private Text textAmmo;
-
+    
     private void Start()
     {
         isWeaponEnabled = true;
@@ -71,7 +68,6 @@ public class weaponA : MonoBehaviour
         {
             if (finishReloadingTime > Time.time)
             {
-                textAmmo.text = "Reloading";
                 return;
             }
             isReloading = false;
@@ -93,8 +89,22 @@ public class weaponA : MonoBehaviour
             isShooting = false;
         }
 
-        textAmmo.text = magazineAmmo.ToString() + "/" + reserveAmmo.ToString();
+    }
+    
+    
+    private void OnEnable()
+    {
+        if (magazineAmmo > maxMagazineAmmo) magazineAmmo = maxMagazineAmmo;
+        isWeaponEnabled = true;
+        if (weaponAC != null && weaponAS != null)
+        {
+            weaponAS.clip = weaponAC;
+        }
+    }
 
+    private void OnDisable()
+    {
+        isWeaponEnabled = false;
     }
 
     private bool WeaponShootIsOnCooldown(float nextShoot)
@@ -136,21 +146,32 @@ public class weaponA : MonoBehaviour
         }
     }
 
-    private void RefillAmmo()
+    public void SetReloadDelay(float t)
     {
-        reserveAmmo = maxReserveAmmo;
+        reloadDelay = t;
     }
 
-    private void OnEnable()
+    public void SetNextShootDelay(float t)
     {
-        if (magazineAmmo > maxMagazineAmmo) magazineAmmo = maxMagazineAmmo;
-        textAmmo = GameObject.Find("Ammo").GetComponent<Text>();
-        isWeaponEnabled = true;
-        weaponAS.clip = weaponAC;
+        nextShootDelay = t;
     }
 
-    private void OnDisable()
+    public void SetDamage(float d)
     {
-        isWeaponEnabled = false;
+        damage = d;
     }
+
+    public void SetRange(float r)
+    {
+        range = r;
+    }
+
+    public void SetWeaponAmmo(int curMag, int curRes, int maxMag, int maxRes)
+    {
+        maxMagazineAmmo = maxMag;
+        maxReserveAmmo = maxRes;
+        magazineAmmo = curMag;
+        reserveAmmo = curRes;
+    }
+
 }
