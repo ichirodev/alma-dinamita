@@ -53,9 +53,15 @@ public class health : MonoBehaviour
         var healthAfterDamage = playerHealth - damage;
         if (healthAfterDamage <= 0)
         {
-            // die
-            fuckingDie();
-            Debug.Log("xd die");
+            if (transform.name == "Player")
+            {
+                Debug.Log("You lost!");
+            }
+            else
+            {
+                fuckingDie();
+                Debug.Log("xd die");
+            }
             return;
         }
         playerHealth = healthAfterDamage;

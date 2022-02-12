@@ -2,21 +2,24 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
 using Random = UnityEngine.Random;
-
 public class zombie : MonoBehaviour
 {
     private Transform player;
+    private health playerHealth;
     private Vector3 randomGoToPosition;
     public NavMeshAgent zAgent;
     private bool playerInsideChaseRange = false;
+    private bool playerInsideAttackRange = false;
     private bool walking = false;
     private bool lookingForPlayer = false;
     private bool shouldWalk = true;
     private float chaseRadius = 8f;
-    
+    private const float attackRadius = 1f;
+    private float attackTime = 0.0001f;
     private IEnumerator Start()
     {
         player = GameObject.Find("Player").GetComponent<Transform>();
+        playerHealth = GameObject.Find("Player").GetComponent<health>();
         yield return new WaitForSeconds(2f);
         zAgent = GetComponent<NavMeshAgent>();
     }
@@ -29,6 +32,7 @@ public class zombie : MonoBehaviour
         {
             chaseRadius = 24.0003f;
             ChasePlayer();
+            AttackPlayer(playerInsideAttackRange);
             return;
         }
         
@@ -59,13 +63,17 @@ public class zombie : MonoBehaviour
 
     private void FixedUpdate()
     {
-        Collider[] sphereColliders = Physics.OverlapSphere(this.transform.position, chaseRadius);
-        foreach (Collider coll in sphereColliders) playerInsideChaseRange = coll.name == "Player";
+        Collider[] sphereCollidersForChase = Physics.OverlapSphere(this.transform.position, chaseRadius);
+        Collider[] sphereCollidersForAttack = Physics.OverlapSphere(this.transform.position, attackRadius);
+        foreach (Collider coll in sphereCollidersForChase) playerInsideChaseRange = coll.name == "Player";
+        foreach (Collider coll in sphereCollidersForAttack) playerInsideAttackRange = coll.name == "Player";
     }
 
     private void OnDrawGizmos()
     {
         Gizmos.DrawWireSphere(this.transform.position, chaseRadius);
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(this.transform.position, attackRadius);
     }
 
     private void ChasePlayer()
@@ -125,6 +133,18 @@ public class zombie : MonoBehaviour
     private void StandStill()
     {
         Debug.Log("stand");
+    }
+    
+    
+    private void AttackPlayer(bool attackRange)
+    {
+        // If the player is in the attack range and the attack cooldown has passed attack and add a cooldown to the attack
+        if (attackRange && (Time.time > attackTime))
+        {
+            Debug.Log("Attack!" + Time.time);
+            attackTime = Time.time + 1.8f;
+            playerHealth.SetDamageOnHealth(10f);
+        }
     }
     
 }
