@@ -13,6 +13,7 @@ public class misc : MonoBehaviour
     // Required data to display
     [SerializeField] private health playerHealth;
     [SerializeField] private movement playerMovement;
+    [SerializeField] private weaponsManager playerWM;
     // Control what GUI should be displayed
     public bool showFPSCounter = true;
     public bool showHealthPoints = true;
@@ -36,6 +37,7 @@ public class misc : MonoBehaviour
         {
             // measure average frames per second
             mFpsAccumulator++;
+            framesPerSecondText.enabled = true;
             if (Time.realtimeSinceStartup > mFpsNextPeriod)
             {
                 mCurrentFps = (int)(mFpsAccumulator / FPSMeasurePeriod);
@@ -44,17 +46,31 @@ public class misc : MonoBehaviour
                 framesPerSecondText.text = string.Format(display, mCurrentFps);
             }
         }
+        else
+        {
+            framesPerSecondText.enabled = false;
+        }
 
         if (showHealthPoints)
         {
             // display health on screen
+            healthPointsText.enabled = true;
             healthPointsText.text = playerHealth.GetPlayerHealth().ToString();
+        }
+        else
+        {
+            healthPointsText.enabled = false;
         }
 
         if (showMovementDetails)
         {
             // show movement speed
-            movementDetailsText.text = "Movement speed: " + playerMovement.GetMovementSpeedAsUnits().ToString();
+            movementDetailsText.enabled = true;
+            movementDetailsText.text = "movspeed: " + playerMovement.GetMovementSpeedAsUnits().ToString();
+        }
+        else
+        {
+            movementDetailsText.enabled = false;
         }
     }
 }

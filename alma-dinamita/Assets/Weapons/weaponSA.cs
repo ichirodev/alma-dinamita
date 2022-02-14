@@ -1,6 +1,10 @@
 using UnityEngine;
+using UnityEngine.UI;
+
 public class weaponSA : MonoBehaviour
 {
+    // Menu control
+    private menu menuEscape;
     // Audio effect of the shot when fired
     [SerializeField] public AudioSource weaponAS;
     [SerializeField] public AudioClip weaponAC;
@@ -29,6 +33,8 @@ public class weaponSA : MonoBehaviour
     public bool debugHit = true;
     [SerializeField] GameObject debugHitGameObject;
     // GUI
+    public bool showAmmoOnHUD = true;
+    private Text ammoText;
     
     private void Start()
     {
@@ -39,6 +45,7 @@ public class weaponSA : MonoBehaviour
     }
     private void Update()
     {
+        if (menuEscape.isOpen) return;
         if (Input.GetKeyDown(KeyCode.R) || magazineAmmo == 0)
         {
             if (magazineAmmo < maxMagazineAmmo)
@@ -88,12 +95,22 @@ public class weaponSA : MonoBehaviour
         {
             isShooting = false;
         }
-
+        
+        if (showAmmoOnHUD)
+        {
+            ammoText.text = magazineAmmo.ToString() + "/" + reserveAmmo.ToString();
+        }
     }
     
     
     private void OnEnable()
     {
+        menuEscape = GetComponentInParent<menu>();
+        if (showAmmoOnHUD)
+        {
+            ammoText = GameObject.Find("Ammo").GetComponent<Text>();
+            ammoText.enabled = true;
+        }
         if (magazineAmmo > maxMagazineAmmo) magazineAmmo = maxMagazineAmmo;
         isWeaponEnabled = true;
         if (weaponAC != null && weaponAS != null)
@@ -105,6 +122,7 @@ public class weaponSA : MonoBehaviour
     private void OnDisable()
     {
         isWeaponEnabled = false;
+        GameObject.Find("Ammo").GetComponent<Text>().enabled = false;
     }
 
     private bool WeaponShootIsOnCooldown(float nextShoot)

@@ -60,7 +60,7 @@ public class health : MonoBehaviour
             else
             {
                 fuckingDie();
-                Debug.Log("xd die");
+                GameObject.Find("Player").GetComponent<gameScore>().ScoreUpCommonKilled();
             }
             return;
         }
