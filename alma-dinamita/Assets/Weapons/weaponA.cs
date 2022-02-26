@@ -1,5 +1,9 @@
+using System;
+using System.Numerics;
 using UnityEngine;
 using UnityEngine.UI;
+using Quaternion = UnityEngine.Quaternion;
+using Vector3 = UnityEngine.Vector3;
 
 public class weaponA : MonoBehaviour
 {
@@ -32,11 +36,90 @@ public class weaponA : MonoBehaviour
     public Camera firstPersonCamera;
     public bool debugHit = true;
     [SerializeField] GameObject debugHitGameObject;
+    // Weapon recoil
+    public class RecoilPattern
+    {
+        public float[] x;
+        public float[] y;
+        public int i = 0;
+        public int c = 0;
+
+        public RecoilPattern(float[] _x, float[] _y)
+        {
+            if (_x.Length != _y.Length) 
+                throw new Exception("RecoilPattern constructor failed because x and y arrays have a different length");
+            
+
+            i = _x.Length;
+            x = _x;
+            y = _y;
+        }
+
+        public float[] GetRecoilAt(int atIndex)
+        {
+            float[] r = new[] {0.0f, 0.0f};
+            try
+            {
+                r[0] = x[atIndex];
+                r[1] = y[atIndex];
+            }
+            catch (IndexOutOfRangeException indexException)
+            {
+                r[0] = x[x.Length - 1];
+                r[1] = y[y.Length - 1];
+                Debug.Log(indexException.Message);
+            }
+            return r;
+        }
+
+        public float[] GetNextRecoil()
+        {
+            float[] r = new[] {0.0f, 0.0f};
+            
+            try
+            {
+                r[0] = x[c];
+                r[1] = y[c];
+            }
+            catch (IndexOutOfRangeException indexException)
+            {
+                r[0] = 0.0f;
+                r[1] = 0.0f;
+                Debug.Log(indexException.Message);
+            }
+            UpdateNextRecoilCounter();
+            return r;
+        }
+
+        public void UpdateNextRecoilCounter()
+        {
+            if (c < i-1) 
+                c = c + 1;
+        }
+
+        public int RestartRecoilCounter()
+        {
+            c = 0;
+            return c;
+        }
+    }
+
+    private float[] defaultRecoilPatternX = new []
+    {
+        0.0f, 0.002f, -0.0021f, 0.0024f, -0.008f, 0.0064f, -0.00334f, -0.00453f, 0.0456f, 0.0097f, -0.01577f, 0.00578f, 0.005902f, -0.06111f
+    };
+    private float[] defaultRecoilPatternY  = new []
+    {
+        0.0f, 0.01f, 0.02f, 0.025f, 0.029f, 0.03f, 0.06f, 0.0777f, 0.08f, 0.092f, 0.093f, 0.097f, 0.0978f, 0.0789f
+    };
+
+    private RecoilPattern weaponRecoil;
     // GUI
     public bool showAmmoOnHUD = true;
     private Text ammoText;
     private void Start()
     {
+        weaponRecoil = new RecoilPattern(defaultRecoilPatternX, defaultRecoilPatternY);
         isWeaponEnabled = true;
         isShooting = false;
         isReloading = false;
@@ -77,6 +160,7 @@ public class weaponA : MonoBehaviour
                 return;
             }
             isReloading = false;
+            weaponRecoil.RestartRecoilCounter();
         }
 
         if (!WeaponShootIsOnCooldown(nextShootTime))
@@ -93,6 +177,7 @@ public class weaponA : MonoBehaviour
         if (Input.GetMouseButtonUp(0))
         {
             isShooting = false;
+            weaponRecoil.RestartRecoilCounter();
         }
 
         if (showAmmoOnHUD)
@@ -148,6 +233,10 @@ public class weaponA : MonoBehaviour
     private void Shoot()
     {
         Vector3 nextBulletRayPosition = firstPersonCamera.transform.forward;
+        var nextRecoilPosition = weaponRecoil.GetNextRecoil();
+        nextBulletRayPosition.z = nextBulletRayPosition.z + nextRecoilPosition[0];
+        nextBulletRayPosition.x = nextBulletRayPosition.x + nextRecoilPosition[0];
+        nextBulletRayPosition.y = nextBulletRayPosition.y + nextRecoilPosition[1];
         RaycastHit hit;
         if (Physics.Raycast(firstPersonCamera.transform.position, nextBulletRayPosition, out hit, range))
         {

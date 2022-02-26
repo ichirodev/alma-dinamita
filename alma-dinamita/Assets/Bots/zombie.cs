@@ -12,21 +12,30 @@ public class zombie : MonoBehaviour
     private bool playerInsideAttackRange = false;
     private bool walking = false;
     private bool lookingForPlayer = false;
-    private bool shouldWalk = true;
+    private bool shouldWalk = false;
     private float chaseRadius = 8f;
     private const float attackRadius = 1f;
     private float attackTime = 0.0001f;
+    public bool standingStill = false;
+    public float standTilTime = 0.0001f;
     private IEnumerator Start()
     {
         player = GameObject.Find("Player").GetComponent<Transform>();
         playerHealth = GameObject.Find("Player").GetComponent<health>();
         yield return new WaitForSeconds(2f);
         zAgent = GetComponent<NavMeshAgent>();
+        if (Random.Range(0, 101) > 50)
+        {
+            shouldWalk = true;
+        }
     }
 
     private void Update()
     {
-        if (!zAgent) return;
+        standingStill = standTilTime > Time.time;
+        
+        if (!zAgent || standingStill) return;
+        
         
         if (playerInsideChaseRange)
         {
@@ -91,10 +100,7 @@ public class zombie : MonoBehaviour
     {
         // Set the zombie speed as medium to make it walk
         zAgent.speed = 1.2f;
-        
-        
-        Debug.Log("look");
-        
+
         var transformPositionX = transform.position.x;
         var transformPositionZ = transform.position.z;
         
@@ -132,7 +138,7 @@ public class zombie : MonoBehaviour
 
     private void StandStill()
     {
-        Debug.Log("stand");
+        standTilTime = Time.time + Random.Range(0.3f, 15.8f);
     }
     
     
@@ -141,7 +147,6 @@ public class zombie : MonoBehaviour
         // If the player is in the attack range and the attack cooldown has passed attack and add a cooldown to the attack
         if (attackRange && (Time.time > attackTime))
         {
-            Debug.Log("Attack!" + Time.time);
             attackTime = Time.time + 1.8f;
             playerHealth.SetDamageOnHealth(10f);
         }

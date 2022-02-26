@@ -108,7 +108,7 @@ public class chaoticSpawner : MonoBehaviour
                 for (var j = 0; j < commonZone.GetInitialBotsAtZone(); j++)
                 {
                     var respawnPosition = new Vector3(Random.Range(zoneX0, zoneX1), mz.localPosition.y + 1.0f, Random.Range(zoneZ0, zoneZ1));
-                    GameObject.Instantiate(commonZombie, respawnPosition, Quaternion.identity);
+                    var lastInstantiatedZombie = GameObject.Instantiate(commonZombie, respawnPosition, Quaternion.identity);
                 }
             } else if (mz.CompareTag(zone5)) 
             {

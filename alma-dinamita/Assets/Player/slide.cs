@@ -9,7 +9,7 @@ public class slide : MonoBehaviour
     public Vector3 fixedSlideToPosition;
     public bool isSliding = false;
     float slideSpeed = 7.880f;
-    private float maxHeightWhenSliding = 0.1f;
+    private float maxHeightWhenSliding = 0.9f;
     RaycastHit rayHitOnGround;
     Ray groundCheckRay;
 
