@@ -4,6 +4,8 @@ using UnityEngine.UI;
 
 public class movement : MonoBehaviour
 {
+    // Escape menu
+    public bool escapeMenuIsOpen = false;
     // The speed at which we can move, in units per second.
     private float moveSpeed = 5.5f;
     [Range(-2, 0), SerializeField] float inHandWeaponWeight = 0;
@@ -60,11 +62,15 @@ public class movement : MonoBehaviour
         // become our movement, but if we're in the air, we'll
         // interpolate between our current movement and this vector, to
         // simulate momentum.
-        var input = new Vector3(
-        Input.GetAxis("Horizontal"),
-        0,
-        Input.GetAxis("Vertical")
-        );
+        var input = new Vector3(0, 0, 0);
+        if (!escapeMenuIsOpen)
+        {
+            input = new Vector3(
+            Input.GetAxis("Horizontal"),
+            0,
+            Input.GetAxis("Vertical")
+            );
+        }
         // Multiply this movement by our desired movement speed
         input *= (moveSpeed * moveSpeedMultiplier + inHandWeaponWeight);
         // The controller's Move method uses world-space directions, so

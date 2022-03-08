@@ -127,7 +127,9 @@ public class weaponA : MonoBehaviour
     }
     private void Update()
     {
+        // Don't allow to use the gun if the ESC menu is open
         if (menuEscape.isOpen) return;
+
         if (Input.GetKeyDown(KeyCode.R) || magazineAmmo == 0)
         {
             if (magazineAmmo < maxMagazineAmmo)
@@ -222,7 +224,7 @@ public class weaponA : MonoBehaviour
         if (magazineAmmo >= 1)
         {
             Shoot();
-            weaponAS.Play();
+            weaponAS.PlayOneShot(weaponAC);
             magazineAmmo--;
             nextShootTime = Time.time + nextShootDelay;
             return true;

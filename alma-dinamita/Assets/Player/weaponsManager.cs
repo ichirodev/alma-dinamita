@@ -20,6 +20,8 @@ public class weaponsManager : MonoBehaviour
     private Object changeToThis;
     public Camera changeToCamera;
     public bool debugHit = true;
+    // Escape menu
+    [SerializeField] public menu escMenu;
     // Update is called once per frame
     void Update()
     {
@@ -37,6 +39,7 @@ public class weaponsManager : MonoBehaviour
         }
         if (Input.GetKeyDown("1"))
         {
+            if (escMenu.isOpen) return;
             if (actualWeapon == 1)
             {
                 return;
@@ -48,6 +51,7 @@ public class weaponsManager : MonoBehaviour
         }
         if (Input.GetKeyDown("2"))
         {
+            if (escMenu.isOpen) return;
             if (actualWeapon == 2)
             {
                 return;
@@ -59,6 +63,7 @@ public class weaponsManager : MonoBehaviour
         }
         if (Input.GetKeyDown("3"))
         {
+            if (escMenu.isOpen) return;
             if (actualWeapon == 3)
             {
                 return;
@@ -70,6 +75,7 @@ public class weaponsManager : MonoBehaviour
         }
         if (Input.GetKeyDown(KeyCode.Q))
         {
+            if (escMenu.isOpen) return;
             auxiliar = actualWeapon;
             actualWeapon = lastWeapon;
             lastWeapon = auxiliar;
@@ -103,6 +109,7 @@ public class weaponsManager : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.E))
         {
+            if (escMenu.isOpen) return;
             ChangeToNewWeaponScript();
         }
     }
